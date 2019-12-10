@@ -36,8 +36,8 @@ var _ server.Option
 type UserService interface {
 	// 根据用户ID获取用户
 	GetUserById(ctx context.Context, in *GetUserByIdReq, opts ...client.CallOption) (*GetUserResp, error)
-	// 根据用户名称获取用户
-	GetUserByName(ctx context.Context, in *GetUserByNameReq, opts ...client.CallOption) (*GetUserResp, error)
+	// 根据用户名密码校验密码是否正确
+	CheckUser(ctx context.Context, in *CheckUserReq, opts ...client.CallOption) (*CheckUserResp, error)
 	// 创建用户
 	CreateUser(ctx context.Context, in *CreateUserReq, opts ...client.CallOption) (*GetUserResp, error)
 	// 更新用户
@@ -72,9 +72,9 @@ func (c *userService) GetUserById(ctx context.Context, in *GetUserByIdReq, opts 
 	return out, nil
 }
 
-func (c *userService) GetUserByName(ctx context.Context, in *GetUserByNameReq, opts ...client.CallOption) (*GetUserResp, error) {
-	req := c.c.NewRequest(c.name, "UserService.GetUserByName", in)
-	out := new(GetUserResp)
+func (c *userService) CheckUser(ctx context.Context, in *CheckUserReq, opts ...client.CallOption) (*CheckUserResp, error) {
+	req := c.c.NewRequest(c.name, "UserService.CheckUser", in)
+	out := new(CheckUserResp)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -107,8 +107,8 @@ func (c *userService) UpdateUser(ctx context.Context, in *UpdateUserReq, opts ..
 type UserServiceHandler interface {
 	// 根据用户ID获取用户
 	GetUserById(context.Context, *GetUserByIdReq, *GetUserResp) error
-	// 根据用户名称获取用户
-	GetUserByName(context.Context, *GetUserByNameReq, *GetUserResp) error
+	// 根据用户名密码校验密码是否正确
+	CheckUser(context.Context, *CheckUserReq, *CheckUserResp) error
 	// 创建用户
 	CreateUser(context.Context, *CreateUserReq, *GetUserResp) error
 	// 更新用户
@@ -118,7 +118,7 @@ type UserServiceHandler interface {
 func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts ...server.HandlerOption) error {
 	type userService interface {
 		GetUserById(ctx context.Context, in *GetUserByIdReq, out *GetUserResp) error
-		GetUserByName(ctx context.Context, in *GetUserByNameReq, out *GetUserResp) error
+		CheckUser(ctx context.Context, in *CheckUserReq, out *CheckUserResp) error
 		CreateUser(ctx context.Context, in *CreateUserReq, out *GetUserResp) error
 		UpdateUser(ctx context.Context, in *UpdateUserReq, out *GetUserResp) error
 	}
@@ -137,8 +137,8 @@ func (h *userServiceHandler) GetUserById(ctx context.Context, in *GetUserByIdReq
 	return h.UserServiceHandler.GetUserById(ctx, in, out)
 }
 
-func (h *userServiceHandler) GetUserByName(ctx context.Context, in *GetUserByNameReq, out *GetUserResp) error {
-	return h.UserServiceHandler.GetUserByName(ctx, in, out)
+func (h *userServiceHandler) CheckUser(ctx context.Context, in *CheckUserReq, out *CheckUserResp) error {
+	return h.UserServiceHandler.CheckUser(ctx, in, out)
 }
 
 func (h *userServiceHandler) CreateUser(ctx context.Context, in *CreateUserReq, out *GetUserResp) error {

@@ -28,20 +28,25 @@ func Login(ctx *gin.Context) {
 		return
 	}
 	// 调用rpc服务根据用户名查询用户信息
-	respU, err := userService.GetUserByName(context.TODO(), &user.GetUserByNameReq{
+	respU, err := userService.CheckUser(context.TODO(), &user.CheckUserReq{
 		TenantId: apiG.GetTenantId(),
 		Username: loginForm.Username,
+		Password: loginForm.Password,
 	})
 	if err != nil {
 		apiG.Response(http.StatusOK, false, message.ServerError, err.Error())
 		return
 	}
 	// 校验密码是否正确
-	if respU.User.Password != loginForm.Password {
+	if !respU.Success {
 		// 密码校验失败
-		apiG.Response(http.StatusOK, false, message.PasswordError, nil)
+		apiG.Response(http.StatusOK, false, respU.Message, nil)
+		return
 	}
 	// 生成token
+	apiG.Response(http.StatusOK, true, "", &map[string]interface{}{
+		"token": "abc",
+	})
 }
 
 type CreateUserForm struct {

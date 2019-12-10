@@ -1,6 +1,3 @@
-
-GOPATH:=$(shell go env GOPATH)
-
 .PHONY: build
 build:
 	go build -o upm-web main.go plugin.go

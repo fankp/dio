@@ -5,22 +5,22 @@ package devops.integral.upm.srv.service;
 service UserService {
     // 根据用户ID获取用户
     rpc GetUserById (GetUserByIdReq) returns (GetUserResp);
-    // 根据用户名称获取用户
-    rpc GetUserByName (GetUserByNameReq) returns (GetUserResp);
+    // 根据用户名密码校验密码是否正确
+    rpc CheckUser (CheckUserReq) returns (CheckUserResp);
     // 创建用户
     rpc CreateUser (CreateUserReq) returns (GetUserResp);
     // 更新用户
     rpc UpdateUser (UpdateUserReq) returns (GetUserResp);
-
 }
 
 message GetUserByIdReq {
     int32 userId = 1;
 }
 
-message GetUserByNameReq {
+message CheckUserReq {
     int32 tenantId = 1;
     string username = 2;
+    string password = 3;
 }
 
 message User {
@@ -37,12 +37,6 @@ message User {
     int32 updatedOn = 11;
     string updatedBy = 12;
     int32 deletedOn = 13;
-}
-
-message GetUserResp {
-    bool success = 1;
-    string message = 2;
-    User user = 3;
 }
 
 message CreateUserReq {
@@ -64,4 +58,15 @@ message UpdateUserReq {
     string email = 5;
     string phone = 6;
     string updatedBy = 7;
+}
+
+message GetUserResp {
+    bool success = 1;
+    string message = 2;
+    User user = 3;
+}
+
+message CheckUserResp {
+    bool success = 1;
+    string message = 2;
 }
