@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package devops.integral.upm.srv.service;
+
+service UserService {
+    // 根据用户ID获取用户
+    rpc GetUserById (GetUserByIdReq) returns (GetUserResp);
+    // 根据用户名称获取用户
+    rpc GetUserByName (GetUserByNameReq) returns (GetUserResp);
+    // 创建用户
+    rpc CreateUser (CreateUserReq) returns (GetUserResp);
+    // 更新用户
+    rpc UpdateUser (UpdateUserReq) returns (GetUserResp);
+
+}
+
+message GetUserByIdReq {
+    int32 userId = 1;
+}
+
+message GetUserByNameReq {
+    int32 tenantId = 1;
+    string username = 2;
+}
+
+message User {
+    int32 userId = 1;
+    int32 tenantId = 2;
+    string username = 3;
+    string chName = 4;
+    string password = 5;
+    string email = 6;
+    string phone = 7;
+    bool admin = 8;
+    int32 createdOn = 9;
+    string createdBy = 10;
+    int32 updatedOn = 11;
+    string updatedBy = 12;
+    int32 deletedOn = 13;
+}
+
+message GetUserResp {
+    bool success = 1;
+    string message = 2;
+    User user = 3;
+}
+
+message CreateUserReq {
+    int32 tenantId = 1;
+    string username = 2;
+    string chName = 3;
+    string password = 4;
+    string email = 5;
+    string phone = 6;
+    string createdBy = 7;
+    string updatedBy = 8;
+}
+
+message UpdateUserReq {
+    int32 userId = 1;
+    int32 tenantId = 2;
+    string username = 3;
+    string chName = 4;
+    string email = 5;
+    string phone = 6;
+    string updatedBy = 7;
+}

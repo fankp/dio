@@ -1,0 +1,5 @@
+app:
+  etcd:
+    enable: true
+    host: localhost
+    port: 2379

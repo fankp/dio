@@ -1,0 +1,12 @@
+app:
+  db:
+    enable: true
+    type: mysql
+    host: localhost
+    port: 3306
+    name: upm
+    user: root
+    password: root-123456
+    maxIdleConnection: 10
+    maxOpenConnection: 30
+    tablePrefix: upm_
