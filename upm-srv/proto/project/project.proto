@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package devops.integral.upm.srv.service;
+
+service ProjectService {
+    // 创建项目
+    rpc CreateProject(CreateProjectReq) returns (ProjectResp);
+    // 更新项目
+    rpc UpdateProject(UpdateProjectReq) returns (ProjectResp);
+    // 查询用户关联的项目
+    rpc SelectUserProjects(SelectUserProjectsReq) returns (UserProjectsResp);
+}
+
+message CreateProjectReq {
+    string projectCode = 1;
+    string projectName = 2;
+    string projectDesc = 3;
+    int32 projectOwner = 4;
+    string createdBy = 5;
+}
+
+message UpdateProjectReq {
+    int32 projectId = 1;
+    string projectCode = 2;
+    string projectName = 3;
+    string projectDesc = 4;
+    string updatedBy = 5;
+}
+
+message ProjectResp {
+    bool success = 1;
+    string message = 2;
+    Project project = 3;
+}
+
+message Project {
+    int32 projectId = 1;
+    string projectCode = 2;
+    string projectName = 3;
+    string projectDesc = 4;
+    int32 projectOwner = 5;
+    int32 createdOn = 6;
+    string createdBy = 7;
+    int32 updatedOn = 8;
+    string updatedBy = 9;
+    int32 deletedOn = 10;
+}
+
+message SelectUserProjectsReq {
+    int32 userId = 1;
+    string projectName = 2;
+}
+
+message UserProjectsResp {
+    bool success = 1;
+    string message = 2;
+    repeated Project projects = 3;
+}

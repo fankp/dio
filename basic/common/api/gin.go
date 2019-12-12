@@ -1,8 +1,8 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"strconv"
 )
 
 type Gin struct {
@@ -10,8 +10,7 @@ type Gin struct {
 }
 
 const (
-	tenantHeaderName = "Tenant-Id"
-	tokenHeaderName  = "Authorization"
+	tokenHeaderName = "Authorization"
 )
 
 type Response struct {
@@ -20,16 +19,28 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
-func (g *Gin) GetTenantId() int32 {
-	// 从header中获取租户信息
-	tenant := g.Context.GetHeader(tenantHeaderName)
-	if tenant != "" {
-		// 转换为int类型
-		tenantId, _ := strconv.ParseInt(tenant, 10, 32)
-		return int32(tenantId)
+func (g *Gin) GetToken() string {
+	return g.Context.GetHeader(tokenHeaderName)
+}
+
+func (g *Gin) GetUserId() int32 {
+	userId, exists := g.Context.Get("user_id")
+	if exists {
+		return userId.(int32)
 	}
-	// 租户信息不存在，返回默认租户0
-	return 0
+	return -1
+}
+
+func (g *Gin) GetChName() string {
+	chName, exists := g.Context.Get("ch_name")
+	if exists {
+		return chName.(string)
+	}
+	return ""
+}
+
+func (g *Gin) GetOperator() string {
+	return fmt.Sprintf("%d,%s", g.GetUserId(), g.GetChName())
 }
 
 func (g *Gin) Response(httpCode int, success bool, msg string, data interface{}) {

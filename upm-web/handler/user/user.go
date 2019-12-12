@@ -5,6 +5,7 @@ import (
 	"devops-integral/basic/common/api"
 	"devops-integral/basic/common/constants"
 	"devops-integral/basic/common/message"
+	"devops-integral/basic/common/utils"
 	user "devops-integral/upm-srv/proto/user"
 	"github.com/gin-gonic/gin"
 	"github.com/micro/go-micro/client"
@@ -29,7 +30,6 @@ func Login(ctx *gin.Context) {
 	}
 	// 调用rpc服务根据用户名查询用户信息
 	respU, err := userService.CheckUser(context.TODO(), &user.CheckUserReq{
-		TenantId: apiG.GetTenantId(),
 		Username: loginForm.Username,
 		Password: loginForm.Password,
 	})
@@ -44,9 +44,13 @@ func Login(ctx *gin.Context) {
 		return
 	}
 	// 生成token
-	apiG.Response(http.StatusOK, true, "", &map[string]interface{}{
-		"token": "abc",
-	})
+	token, err := utils.GenerateToken(respU.User.UserId, respU.User.Username, respU.User.ChName)
+	if err != nil {
+		// 创建token失败
+		apiG.Response(http.StatusOK, false, message.CreateTokenError, err.Error())
+		return
+	}
+	apiG.Response(http.StatusOK, true, "", token)
 }
 
 type CreateUserForm struct {
@@ -57,7 +61,7 @@ type CreateUserForm struct {
 	Phone    string `form:"phone"`
 }
 
-func CreateUser(ctx *gin.Context) {
+func Register(ctx *gin.Context) {
 	apiG := api.Gin{Context: ctx}
 	var createUserFrom CreateUserForm
 	if err := apiG.Context.ShouldBind(&createUserFrom); err != nil {
@@ -65,14 +69,13 @@ func CreateUser(ctx *gin.Context) {
 		return
 	}
 	resp, err := userService.CreateUser(ctx, &user.CreateUserReq{
-		TenantId:  apiG.GetTenantId(),
 		Username:  createUserFrom.Username,
 		ChName:    createUserFrom.ChName,
 		Password:  createUserFrom.Password,
 		Email:     createUserFrom.Email,
 		Phone:     createUserFrom.Phone,
-		CreatedBy: "",
-		UpdatedBy: "",
+		CreatedBy: apiG.GetOperator(),
+		UpdatedBy: apiG.GetOperator(),
 	})
 	if err != nil {
 		apiG.Response(http.StatusOK, false, message.ServerError, err.Error())

@@ -4,7 +4,9 @@ import (
 	"devops-integral/basic"
 	"devops-integral/basic/common/constants"
 	"devops-integral/basic/config"
+	"devops-integral/upm-srv/handler/project"
 	"devops-integral/upm-srv/handler/user"
+	pp "devops-integral/upm-srv/proto/project"
 	pu "devops-integral/upm-srv/proto/user"
 	"fmt"
 	"github.com/micro/go-micro"
@@ -32,6 +34,8 @@ func main() {
 	// 注册handlers
 	// 注册user服务handler
 	pu.RegisterUserServiceHandler(service.Server(), new(user.Handler))
+	// 注册project服务handler
+	pp.RegisterProjectServiceHandler(service.Server(), new(project.Handler))
 	// 启动服务
 	if err := service.Run(); err != nil {
 		log.Fatal("服务启动失败：", err)

@@ -37,7 +37,7 @@ type UserService interface {
 	// 根据用户ID获取用户
 	GetUserById(ctx context.Context, in *GetUserByIdReq, opts ...client.CallOption) (*GetUserResp, error)
 	// 根据用户名密码校验密码是否正确
-	CheckUser(ctx context.Context, in *CheckUserReq, opts ...client.CallOption) (*CheckUserResp, error)
+	CheckUser(ctx context.Context, in *CheckUserReq, opts ...client.CallOption) (*GetUserResp, error)
 	// 创建用户
 	CreateUser(ctx context.Context, in *CreateUserReq, opts ...client.CallOption) (*GetUserResp, error)
 	// 更新用户
@@ -72,9 +72,9 @@ func (c *userService) GetUserById(ctx context.Context, in *GetUserByIdReq, opts 
 	return out, nil
 }
 
-func (c *userService) CheckUser(ctx context.Context, in *CheckUserReq, opts ...client.CallOption) (*CheckUserResp, error) {
+func (c *userService) CheckUser(ctx context.Context, in *CheckUserReq, opts ...client.CallOption) (*GetUserResp, error) {
 	req := c.c.NewRequest(c.name, "UserService.CheckUser", in)
-	out := new(CheckUserResp)
+	out := new(GetUserResp)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -108,7 +108,7 @@ type UserServiceHandler interface {
 	// 根据用户ID获取用户
 	GetUserById(context.Context, *GetUserByIdReq, *GetUserResp) error
 	// 根据用户名密码校验密码是否正确
-	CheckUser(context.Context, *CheckUserReq, *CheckUserResp) error
+	CheckUser(context.Context, *CheckUserReq, *GetUserResp) error
 	// 创建用户
 	CreateUser(context.Context, *CreateUserReq, *GetUserResp) error
 	// 更新用户
@@ -118,7 +118,7 @@ type UserServiceHandler interface {
 func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts ...server.HandlerOption) error {
 	type userService interface {
 		GetUserById(ctx context.Context, in *GetUserByIdReq, out *GetUserResp) error
-		CheckUser(ctx context.Context, in *CheckUserReq, out *CheckUserResp) error
+		CheckUser(ctx context.Context, in *CheckUserReq, out *GetUserResp) error
 		CreateUser(ctx context.Context, in *CreateUserReq, out *GetUserResp) error
 		UpdateUser(ctx context.Context, in *UpdateUserReq, out *GetUserResp) error
 	}
@@ -137,7 +137,7 @@ func (h *userServiceHandler) GetUserById(ctx context.Context, in *GetUserByIdReq
 	return h.UserServiceHandler.GetUserById(ctx, in, out)
 }
 
-func (h *userServiceHandler) CheckUser(ctx context.Context, in *CheckUserReq, out *CheckUserResp) error {
+func (h *userServiceHandler) CheckUser(ctx context.Context, in *CheckUserReq, out *GetUserResp) error {
 	return h.UserServiceHandler.CheckUser(ctx, in, out)
 }
 

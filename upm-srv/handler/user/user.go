@@ -9,6 +9,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// 用户密码加密密钥，必须是16位或24位或32位
 const userSecret = "usersecretdevops"
 
 type Handler struct {
@@ -29,10 +30,10 @@ func (h Handler) GetUserById(ctx context.Context, req *proto.GetUserByIdReq, res
 	return err
 }
 
-func (h Handler) CheckUser(ctx context.Context, req *proto.CheckUserReq, resp *proto.CheckUserResp) error {
+func (h Handler) CheckUser(ctx context.Context, req *proto.CheckUserReq, resp *proto.GetUserResp) error {
 	userService := user.GetUserService()
 	// 根据租户和用户名查询用户
-	u, err := userService.QueryByName(req.TenantId, req.Username)
+	u, err := userService.QueryByName(req.Username)
 	if err != nil {
 		// 查询失败，返回异常信息
 		resp.Success = false
@@ -50,6 +51,7 @@ func (h Handler) CheckUser(ctx context.Context, req *proto.CheckUserReq, resp *p
 		return nil
 	}
 	resp.Success = true
+	resp.User = convert2ProtoUser(*u)
 	return nil
 }
 
@@ -57,7 +59,6 @@ func (h Handler) CreateUser(ctx context.Context, req *proto.CreateUserReq, resp 
 	userService := user.GetUserService()
 	// 创建用户，对用户密码进行加密
 	u, err := userService.CreateUser(&user.User{
-		TenantId:  req.TenantId,
 		Username:  req.Username,
 		ChName:    req.ChName,
 		Password:  utils.AesEncrypt(req.Password, userSecret),
@@ -82,7 +83,6 @@ func (h Handler) UpdateUser(ctx context.Context, req *proto.UpdateUserReq, resp 
 	userService := user.GetUserService()
 	u, err := userService.UpdateUser(&user.User{
 		UserId:    req.UserId,
-		TenantId:  req.TenantId,
 		Username:  req.Username,
 		ChName:    req.ChName,
 		Email:     req.Email,
@@ -105,7 +105,6 @@ func (h Handler) UpdateUser(ctx context.Context, req *proto.UpdateUserReq, resp 
 func convert2ProtoUser(user user.User) *proto.User {
 	return &proto.User{
 		UserId:    user.UserId,
-		TenantId:  user.TenantId,
 		Username:  user.Username,
 		ChName:    user.ChName,
 		Password:  user.Password,

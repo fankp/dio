@@ -39,6 +39,7 @@ func Init() {
 		gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
 			return dbConfig.GetTablePrefix() + defaultTableName
 		}
+		db.LogMode(true)
 		// 设置最大空闲连接数
 		db.DB().SetMaxIdleConns(dbConfig.GetMaxIdleConnection())
 		//设置最大打开连接数

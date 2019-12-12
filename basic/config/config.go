@@ -16,6 +16,7 @@ var (
 	profiles                defaultProfiles
 	dbConfig                defaultDbConfig
 	etcdConfig              defaultEtcdConfig
+	jwtConfig               defaultJwtConfig
 	lock                    sync.Mutex
 	inited                  bool
 )
@@ -59,6 +60,7 @@ func Init() {
 	// 把加载到的配置信息赋值给变量
 	_ = config.Get(defaultRootPath, "etcd").Scan(&etcdConfig)
 	_ = config.Get(defaultRootPath, "db").Scan(&dbConfig)
+	_ = config.Get(defaultRootPath, "jwt").Scan(&jwtConfig)
 	// 标记状态为已经初始化完成
 	inited = true
 }
@@ -68,4 +70,7 @@ func GetDbConfig() DbConfig {
 }
 func GetEtcdConfig() EtcdConfig {
 	return etcdConfig
+}
+func GetJwtConfig() JwtConfig {
+	return jwtConfig
 }

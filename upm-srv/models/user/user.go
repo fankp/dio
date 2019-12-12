@@ -14,7 +14,7 @@ type Service interface {
 	// 根据用户ID查询用户信息
 	QueryByUserId(userId int32) (*User, error)
 	// 根据用户名称查询用户
-	QueryByName(tenantId int32, username string) (*User, error)
+	QueryByName(username string) (*User, error)
 	// 新增用户
 	CreateUser(user *User) (*User, error)
 	// 更新用户
@@ -26,7 +26,6 @@ type service struct {
 
 type User struct {
 	UserId    int32 `gorm:"primary_key"`
-	TenantId  int32
 	Username  string
 	ChName    string
 	Password  string
@@ -49,10 +48,9 @@ func (s service) QueryByUserId(userId int32) (*User, error) {
 	return user, err
 }
 
-func (s service) QueryByName(tenantId int32, username string) (*User, error) {
+func (s service) QueryByName(username string) (*User, error) {
 	var user = &User{}
 	err := db.GetDb().Where(User{
-		TenantId:  tenantId,
 		Username:  username,
 		DeletedOn: 0,
 	}).First(user).Error
