@@ -1,6 +1,7 @@
 package router
 
 import (
+	"devops-integral/basic/common/middleware/cors"
 	"devops-integral/basic/common/middleware/jwt"
 	"devops-integral/upm-web/handler/project"
 	"devops-integral/upm-web/handler/user"
@@ -11,6 +12,7 @@ func Init() *gin.Engine {
 	r := gin.Default()
 	// 设置跟路径为upm/v1
 	groupV1 := r.Group("/upm/v1")
+	groupV1.Use(cors.Cors())
 	// 用户相关的路由
 	userGroup := groupV1.Group("/user")
 	userGroup.POST("/login", user.Login)

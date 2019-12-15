@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package devops.integral.upm.srv.service;
+
+service RoleService {
+    // 创建角色
+    rpc CreateRole(CreateRoleReq) returns (RoleResp);
+    // 更新角色
+    rpc UpdateRole(UpdateRoleReq) returns (RoleResp);
+    // 删除角色
+    rpc DeleteRole(DeleteRoleReq) returns (DeleteRoleResp);
+    // 根据角色名称查询角色
+    rpc SelectRolesByName(SelectRoleReq) returns (SelectRolesResp);
+    // 给角色授权
+    rpc AccessRole(AccessRoleReq) returns (AccessRoleResp);
+}
+
+message CreateRoleReq {
+    string roleName = 1;
+    string roleDesc = 2;
+    string createdBy = 3;
+}
+
+message UpdateRoleReq {
+    int32 roleId = 1;
+    string roleName = 2;
+    string roleDesc = 3;
+    string updatedBy = 4;
+}
+
+message DeleteRoleReq {
+    int32 roleId = 1;
+    string updatedBy = 2;
+}
+
+message DeleteRoleResp {
+    bool success = 1;
+    string message = 2;
+}
+
+message SelectRoleReq {
+    int32 roleId = 1;
+    string roleName = 2;
+}
+
+message AccessRoleReq {
+    int32 roleId = 1;
+    repeated int32 privilegeIds = 2;
+    string createdBy = 3;
+}
+
+message AccessRoleResp {
+    bool success = 1;
+    string message = 2;
+}
+
+message Role {
+    int32 roleId = 1;
+    string roleName = 2;
+    string roleDesc = 3;
+    int32 createdOn = 4;
+    string createdBy = 5;
+    int32 updatedOn = 6;
+    string updatedBy = 7;
+    int32 deletedOn = 8;
+}
+
+message RoleResp {
+    bool success = 1;
+    string message = 2;
+    Role role = 3;
+}
+
+message SelectRolesResp {
+    bool success = 1;
+    string message = 2;
+    repeated Role role = 3;
+}
