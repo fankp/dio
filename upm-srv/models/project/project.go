@@ -20,6 +20,8 @@ type Service interface {
 	SelectUserProjects(userId int32, projectName string) ([]Project, error)
 	// 查询所有项目
 	SelectAllProjects() ([]Project, error)
+	// 查询用户在项目下的角色
+	SelectUserProjectRole(userId, projectId int32) ([]int32, error)
 }
 
 type service struct {
@@ -84,6 +86,16 @@ func (s *service) SelectAllProjects() ([]Project, error) {
 	)
 	err = db.GetDb().Where("delete_on = '0'").Find(&projects).Error
 	return projects, err
+}
+
+func (s *service) SelectUserProjectRole(userId, projectId int32) ([]int32, error) {
+	var (
+		roleIds []int32
+		err     error
+	)
+	err = db.GetDb().Table("upm_user_project_role_rlat").Select("role_id").Where(`deleted_on = '0' and user_id=? and project_id=?
+		and role_id in (select role_id from upm_role where deleted_on='0')`, userId, projectId).Scan(&roleIds).Error
+	return roleIds, err
 }
 
 func GetProjectService() Service {

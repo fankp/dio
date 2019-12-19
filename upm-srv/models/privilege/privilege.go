@@ -12,13 +12,13 @@ var (
 
 type Service interface {
 	// 查询角色拥有的权限清单
-	SelectPrivileges(roleId int32) (*[]Privilege, error)
+	SelectPrivilegeCodes(roleId int32) ([]string, error)
 	// 查询所有的权限清单
-	SelectAllPrivileges() (*[]Privilege, error)
+	SelectAllPrivilegeCodes() ([]string, error)
 	// 查询允许的权限群组
-	SelectPrivilegeGroups(roleId int32) (*[]PrivilegeGroup, error)
+	SelectPrivilegeGroups(roleIds []int32) ([]PrivilegeGroup, error)
 	// 查询所有的权限群组
-	SelectAllPrivilegeGroups() (*[]PrivilegeGroup, error)
+	SelectAllPrivilegeGroups() ([]PrivilegeGroup, error)
 }
 
 type service struct {
@@ -47,48 +47,55 @@ type PrivilegeGroup struct {
 	DeletedOn          int32
 }
 
-func (s *service) SelectPrivileges(roleId int32) (*[]Privilege, error) {
+func (s *service) SelectPrivilegeCodes(roleId int32) ([]string, error) {
 	var (
 		privileges []Privilege
-		err error
+		err        error
 	)
 	selectSql := "deleted_on='0' and privilege_id in (select privilege_id from upm_role_privilege_rlat t where deleted_on='0' and t.role_id = ?)"
-	err = db.GetDb().Where(selectSql, roleId).Find(&privileges).Error
-	return &privileges, err
+	err = db.GetDb().Table("upm_privilege").Select("privilege_code").Where(selectSql, roleId).Find(&privileges).Error
+	privilegeCodes := make([]string, len(privileges))
+	for i, privilege := range privileges {
+		privilegeCodes[i] = privilege.PrivilegeCode
+	}
+	return privilegeCodes, err
 }
 
-func (s *service) SelectAllPrivileges() (*[]Privilege, error) {
+func (s *service) SelectAllPrivilegeCodes() ([]string, error) {
 	var (
 		privileges []Privilege
-		err error
 	)
-	err = db.GetDb().Where(&Privilege{DeletedOn:0}).Find(&privileges).Error
-	return &privileges, err
+	err := db.GetDb().Table("upm_privilege").Select("privilege_code").Where("deleted_on='0'").Find(&privileges).Error
+	privilegeCodes := make([]string, len(privileges))
+	for i, privilege := range privileges {
+		privilegeCodes[i] = privilege.PrivilegeCode
+	}
+	return privilegeCodes, err
 }
 
-func (s *service) SelectPrivilegeGroups(roleId int32) (*[]PrivilegeGroup, error) {
+func (s *service) SelectPrivilegeGroups(roleIds []int32) ([]PrivilegeGroup, error) {
 	var (
 		privilegeGroups []PrivilegeGroup
-		err error
+		err             error
 	)
-	selectPrivilegeSql := "deleted_on='0' and privilege_id in (select privilege_id from upm_role_privilege_rlat t where deleted_on='0' and t.role_id = ?)"
-	err = db.GetDb().Preload("Privilege", selectPrivilegeSql, roleId).Where(&PrivilegeGroup{
+	selectPrivilegeSql := "deleted_on='0' and privilege_id in (select privilege_id from upm_role_privilege_rlat t where deleted_on='0' and t.role_id in (?))"
+	err = db.GetDb().Preload("Privilege", selectPrivilegeSql, roleIds).Where(&PrivilegeGroup{
 		DeletedOn: 0,
 	}).Find(&privilegeGroups).Error
-	return &privilegeGroups, err
+	return privilegeGroups, err
 }
 
-func (s *service) SelectAllPrivilegeGroups() (*[]PrivilegeGroup, error) {
+func (s *service) SelectAllPrivilegeGroups() ([]PrivilegeGroup, error) {
 	var (
 		privilegeGroups []PrivilegeGroup
-		err error
+		err             error
 	)
 	err = db.GetDb().Preload("Privilege", &Privilege{
 		DeletedOn: 0,
 	}).Where(&PrivilegeGroup{
 		DeletedOn: 0,
 	}).Find(&privilegeGroups).Error
-	return &privilegeGroups, err
+	return privilegeGroups, err
 }
 
 func GetPrivilegeService() Service {

@@ -10,10 +10,11 @@ type Claims struct {
 	UserId   int32  `json:"id"`
 	Username string `json:"username"`
 	ChName   string `json:"ch_name"`
+	Admin    bool   `json:"admin"`
 	jwt.StandardClaims
 }
 
-func GenerateToken(userId int32, username, chName string) (string, error) {
+func GenerateToken(userId int32, username, chName string, admin bool) (string, error) {
 	nowTime := time.Now()
 	// 过期时间，默认1小时
 	expireTime := nowTime.Add(60 * time.Minute)
@@ -21,6 +22,7 @@ func GenerateToken(userId int32, username, chName string) (string, error) {
 		userId,
 		username,
 		chName,
+		admin,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "devops-integral",

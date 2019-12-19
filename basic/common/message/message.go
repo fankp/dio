@@ -7,4 +7,6 @@ const (
 	PasswordError            = "密码不正确"
 	CreateTokenError         = "创建Token失败"
 	InvalidTokenError        = "Token无效或不存在"
+	CheckPrivilegeError      = "校验权限信息失败"
+	NoPrivilegeError         = "权限不足，请联系管理员"
 )

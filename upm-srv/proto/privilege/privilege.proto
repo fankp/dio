@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package devops.integral.upm.srv.service;
+
+service PrivilegeService {
+    // 查询允许访问的权限清单
+    rpc SelectPrivilegeCodes(SelectPrivilegesReq) returns (SelectPrivilegeCodesResp);
+    // 进行鉴权
+    rpc CheckPrivilege(CheckPrivilegeReq) returns (CheckPrivilegeResp);
+    // 查询允许访问的权限组清单
+    rpc SelectPrivilegeGroups(SelectPrivilegesReq) returns (SelectPrivilegeGroupsResp);
+}
+
+message Privilege {
+    int32 privilegeId = 1;
+    int32 privilegeGroupId = 2;
+    string privilegeCode = 3;
+    string privilegeName = 4;
+    int32 createdOn = 5;
+    string createdBy = 6;
+    int32 updatedOn = 7;
+    string updatedBy = 8;
+    int32 deletedOn = 9;
+}
+
+message PrivilegeGroup {
+    int32 privilegeGroupId = 1;
+    string privilegeGroupName = 2;
+    repeated Privilege privileges = 3;
+    int32 createdOn = 4;
+    string createdBy = 5;
+    int32 updatedOn = 6;
+    string updatedBy = 7;
+    int32 deletedOn = 8;
+}
+
+message SelectPrivilegesReq {
+    int32 userId = 1;
+    int32 projectId = 2;
+    bool admin = 3;
+}
+
+message SelectPrivilegeCodesResp {
+    bool success = 1;
+    string message = 2;
+    repeated string privilegeCodes = 3;
+}
+
+message SelectPrivilegeGroupsResp {
+    bool success = 1;
+    string message = 2;
+    repeated PrivilegeGroup privilegeGroups = 3;
+}
+
+message CheckPrivilegeReq {
+    int32 userId = 1;
+    int32 projectId = 2;
+    bool admin = 3;
+    string privilegeCode = 4;
+}
+
+message CheckPrivilegeResp {
+    bool success = 1;
+    string message = 2;
+    bool passed = 3;
+}

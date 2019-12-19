@@ -43,6 +43,10 @@ func (g *Gin) GetOperator() string {
 	return fmt.Sprintf("%d,%s", g.GetUserId(), g.GetChName())
 }
 
+func (g *Gin) IsAdmin() bool {
+	return g.Context.GetBool("admin")
+}
+
 func (g *Gin) Response(httpCode int, success bool, msg string, data interface{}) {
 	g.Context.JSON(httpCode, &Response{
 		Success: success,

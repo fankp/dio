@@ -38,6 +38,7 @@ func JWT() gin.HandlerFunc {
 		apiG.Context.Set("username", claims.Username)
 		apiG.Context.Set("user_id", claims.UserId)
 		apiG.Context.Set("ch_name", claims.ChName)
+		apiG.Context.Set("admin", claims.Admin)
 		// 校验成功，继续执行
 		apiG.Context.Next()
 	}

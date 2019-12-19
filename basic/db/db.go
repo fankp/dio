@@ -3,6 +3,7 @@ package db
 import (
 	"devops-integral/basic/config"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/micro/go-micro/util/log"
 	"sync"

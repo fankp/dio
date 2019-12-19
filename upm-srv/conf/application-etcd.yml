@@ -1,5 +1,5 @@
 app:
   etcd:
     enable: true
-    host: localhost
+    host: 192.168.5.129
     port: 2379

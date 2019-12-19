@@ -6,6 +6,7 @@ proto:
 	protoc --proto_path=${GOPATH}/src:. --micro_out=. --go_out=. proto/user/user.proto
 	protoc --proto_path=${GOPATH}/src:. --micro_out=. --go_out=. proto/project/project.proto
 	protoc --proto_path=${GOPATH}/src:. --micro_out=. --go_out=. proto/role/role.proto
+	protoc --proto_path=${GOPATH}/src:. --micro_out=. --go_out=. proto/privilege/privilege.proto
 
 .PHONY: build
 build: proto
