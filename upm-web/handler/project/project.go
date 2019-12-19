@@ -2,10 +2,10 @@ package project
 
 import (
 	"context"
-	"devops-integral/basic/common/api"
-	"devops-integral/basic/common/constants"
-	"devops-integral/basic/common/message"
-	project "devops-integral/upm-srv/proto/project"
+	"dio/basic/common/api"
+	"dio/basic/common/constants"
+	"dio/basic/common/message"
+	project "dio/upm-srv/proto/project"
 	"github.com/gin-gonic/gin"
 	"github.com/micro/go-micro/client"
 	"net/http"

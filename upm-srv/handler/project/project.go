@@ -2,8 +2,8 @@ package project
 
 import (
 	"context"
-	"devops-integral/upm-srv/models/project"
-	proto "devops-integral/upm-srv/proto/project"
+	"dio/upm-srv/models/project"
+	proto "dio/upm-srv/proto/project"
 )
 
 type Handler struct {

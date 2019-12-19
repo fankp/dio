@@ -1,7 +1,7 @@
 package user
 
 import (
-	"devops-integral/basic/db"
+	"dio/basic/db"
 	"sync"
 )
 

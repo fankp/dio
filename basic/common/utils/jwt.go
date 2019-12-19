@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"devops-integral/basic/config"
+	"dio/basic/config"
 	"github.com/dgrijalva/jwt-go"
 	"time"
 )
@@ -25,7 +25,7 @@ func GenerateToken(userId int32, username, chName string, admin bool) (string, e
 		admin,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer:    "devops-integral",
+			Issuer:    "dio",
 		},
 	}
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

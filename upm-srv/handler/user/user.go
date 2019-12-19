@@ -2,10 +2,10 @@ package user
 
 import (
 	"context"
-	"devops-integral/basic/common/message"
-	"devops-integral/basic/common/utils"
-	"devops-integral/upm-srv/models/user"
-	proto "devops-integral/upm-srv/proto/user"
+	"dio/basic/common/message"
+	"dio/basic/common/utils"
+	"dio/upm-srv/models/user"
+	proto "dio/upm-srv/proto/user"
 	"github.com/jinzhu/gorm"
 )
 

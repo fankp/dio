@@ -2,8 +2,8 @@ package role
 
 import (
 	"context"
-	"devops-integral/upm-srv/models/role"
-	proto "devops-integral/upm-srv/proto/role"
+	"dio/upm-srv/models/role"
+	proto "dio/upm-srv/proto/role"
 	"github.com/micro/go-micro/util/log"
 )
 

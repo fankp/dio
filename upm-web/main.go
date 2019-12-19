@@ -1,10 +1,10 @@
 package main
 
 import (
-	"devops-integral/basic"
-	"devops-integral/basic/common/constants"
-	"devops-integral/basic/config"
-	"devops-integral/upm-web/router"
+	"dio/basic"
+	"dio/basic/common/constants"
+	"dio/basic/config"
+	"dio/upm-web/router"
 	"fmt"
 	"github.com/micro/go-micro/registry"
 	"github.com/micro/go-micro/registry/etcd"

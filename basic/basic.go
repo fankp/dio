@@ -1,9 +1,9 @@
 package basic
 
 import (
-	"devops-integral/basic/config"
-	"devops-integral/basic/db"
-	"devops-integral/basic/redis"
+	"dio/basic/config"
+	"dio/basic/db"
+	"dio/basic/redis"
 )
 
 func Init() {

@@ -1,7 +1,7 @@
 package project
 
 import (
-	"devops-integral/basic/db"
+	"dio/basic/db"
 	"fmt"
 	"sync"
 )

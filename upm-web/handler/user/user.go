@@ -2,11 +2,11 @@ package user
 
 import (
 	"context"
-	"devops-integral/basic/common/api"
-	"devops-integral/basic/common/constants"
-	"devops-integral/basic/common/message"
-	"devops-integral/basic/common/utils"
-	user "devops-integral/upm-srv/proto/user"
+	"dio/basic/common/api"
+	"dio/basic/common/constants"
+	"dio/basic/common/message"
+	"dio/basic/common/utils"
+	user "dio/upm-srv/proto/user"
 	"github.com/gin-gonic/gin"
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/util/log"

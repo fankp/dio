@@ -1,11 +1,11 @@
 package router
 
 import (
-	"devops-integral/basic/common/middleware/cors"
-	"devops-integral/basic/common/middleware/jwt"
-	"devops-integral/upm-web/handler/privilege"
-	"devops-integral/upm-web/handler/project"
-	"devops-integral/upm-web/handler/user"
+	"dio/basic/common/middleware/cors"
+	"dio/basic/common/middleware/jwt"
+	"dio/upm-web/handler/privilege"
+	"dio/upm-web/handler/project"
+	"dio/upm-web/handler/user"
 	"github.com/gin-gonic/gin"
 )
 

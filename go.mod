@@ -1,4 +1,4 @@
-module devops-integral
+module dio
 
 go 1.13
 

@@ -2,10 +2,10 @@ package privilege
 
 import (
 	"context"
-	"devops-integral/basic/common/api"
-	"devops-integral/basic/common/constants"
-	"devops-integral/basic/common/message"
-	privilege "devops-integral/upm-srv/proto/privilege"
+	"dio/basic/common/api"
+	"dio/basic/common/constants"
+	"dio/basic/common/message"
+	privilege "dio/upm-srv/proto/privilege"
 	"github.com/gin-gonic/gin"
 	"github.com/micro/go-micro/client"
 	"net/http"

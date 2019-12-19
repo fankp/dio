@@ -1,7 +1,7 @@
 package db
 
 import (
-	"devops-integral/basic/config"
+	"dio/basic/config"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"

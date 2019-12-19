@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"devops-integral/basic/config"
+	"dio/basic/config"
 	"sync"
 
 	"github.com/go-redis/redis"

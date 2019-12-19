@@ -1,9 +1,9 @@
 package jwt
 
 import (
-	"devops-integral/basic/common/api"
-	"devops-integral/basic/common/message"
-	"devops-integral/basic/common/utils"
+	"dio/basic/common/api"
+	"dio/basic/common/message"
+	"dio/basic/common/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"net/http"

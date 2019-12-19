@@ -2,10 +2,10 @@ package privilege
 
 import (
 	"context"
-	"devops-integral/basic/redis"
-	"devops-integral/upm-srv/models/privilege"
-	"devops-integral/upm-srv/models/role"
-	proto "devops-integral/upm-srv/proto/privilege"
+	"dio/basic/redis"
+	"dio/upm-srv/models/privilege"
+	"dio/upm-srv/models/role"
+	proto "dio/upm-srv/proto/privilege"
 	"fmt"
 	"github.com/micro/go-micro/util/log"
 	"time"
